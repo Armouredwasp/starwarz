@@ -10,18 +10,27 @@ class App extends React.Component{
   constructor(){
     super()
     this.state ={
+      searchfield:"",
       people:{}
     }
   }
 
   componentDidMount(){
-    fetch("https://swapi.co/api/people/1")
+
+  }
+
+  onSearchChange = (event) => {
+    this.setState({searchfield: event.target.value})
+    fetch(`https://swapi.co/api/people/${event.target.value}`)
     .then(response=>response.json())
     .then(data=>this.setState({people:data}))
-  }
+}
   
   render(){
-   return <Card name={this.state.people.name}height={this.state.people.height}mass={this.state.people.mass}birth_year={this.state.people.birth_year}gender={this.state.people.gender}/>
+   return <div>
+    <SearchBox searchChange={this.onSearchChange}/>
+   <Card name={this.state.people.name} height={this.state.searchfield}/>
+   </div> 
   }
 
 }
